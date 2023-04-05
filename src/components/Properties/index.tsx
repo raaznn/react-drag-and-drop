@@ -1,6 +1,8 @@
 import React from "react";
+import useGrid from "../../hooks/useGrid";
 
 const Properties = () => {
+  const grid = useGrid();
   return (
     <div className="bg-slate-200 flex-none w-80 px-5 pt-5">
       <span className="text-lg">Click element to change its properties</span>
