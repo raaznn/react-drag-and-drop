@@ -1,33 +1,34 @@
-import React, { useState } from "react";
-import GridLayout from "react-grid-layout";
+import { useState } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
+import { v4 as uuid } from "uuid";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const Canvas = () => {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<any[]>([]);
 
-  const layout = [
-    { i: "a", x: 0, y: 0, w: 1, h: 2 },
-    { i: "b", x: 1, y: 0, w: 1, h: 2 },
-    { i: "c", x: 2, y: 0, w: 1, h: 2 },
-  ];
-
-  const handleDrop = (layout: any, layoutItem: any, event: any) => {
-    console.log(layout, layoutItem, event);
+  const onDrop = (layout: any, layoutItem: any, event: any) => {
+    const { text } = JSON.parse(event?.dataTransfer?.getData("text/plain"));
+    setItems((prevItems) => [...prevItems, { id: uuid(), type: text }]);
+    console.log("dropped item ==> ", text);
   };
 
   return (
     <ResponsiveGridLayout
-      // onLayoutChange={(e) => onsole.log(e)}
-      onDrop={handleDrop}
-      layouts={{ lg: layout }}
+      // onLayoutChange={() => {}}
+      onDrop={onDrop}
+      // layouts={{ lg: layout }}
       className="layout"
       isDroppable
+      style={{ minHeight: "100%" }}
     >
-      <div key="a" className="bg-blue-500"></div>
-      <div key="b" className="bg-red-500"></div>
-      <div key="c" className="bg-green-500"></div>
+      {items?.map((item, ind) => {
+        return (
+          <div key={item?.id || ind} className="bg-purple-400">
+            {item?.type}
+          </div>
+        );
+      })}
     </ResponsiveGridLayout>
   );
 };

@@ -9,7 +9,7 @@ function App() {
         <div className="bg-pink-400 flex-none w-80">
           <Sidebar />
         </div>
-        <div className="flex-1 min-w-max">
+        <div className="flex-1 min-w-max min-h-max">
           <Canvas />
         </div>
         <div className="bg-purple-400 flex-none w-80">
