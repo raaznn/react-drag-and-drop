@@ -14,22 +14,24 @@ const Canvas = () => {
   };
 
   return (
-    <ResponsiveGridLayout
-      // onLayoutChange={() => {}}
-      onDrop={onDrop}
-      // layouts={{ lg: layout }}
-      className="layout"
-      isDroppable
-      style={{ minHeight: "100%" }}
-    >
-      {items?.map((item, ind) => {
-        return (
-          <div key={item?.id || ind} className="bg-purple-400">
-            {item?.type}
-          </div>
-        );
-      })}
-    </ResponsiveGridLayout>
+    <div className="flex-1 min-w-max min-h-max bg-gray-50">
+      <ResponsiveGridLayout
+        // onLayoutChange={() => {}}
+        onDrop={onDrop}
+        // layouts={{ lg: layout }}
+        className="layout"
+        isDroppable
+        style={{ minHeight: "100%" }}
+      >
+        {items?.map((item, ind) => {
+          return (
+            <div key={item?.id || ind} className="bg-gray-300 cursor-pointer">
+              {item?.type}
+            </div>
+          );
+        })}
+      </ResponsiveGridLayout>
+    </div>
   );
 };
 
