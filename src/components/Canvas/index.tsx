@@ -2,8 +2,40 @@ import { useState } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { v4 as uuid } from "uuid";
 import useGrid from "../../hooks/useGrid";
+import TextField, { TextInput } from "../RenderElements";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
+
+const ElementList = ({
+  type,
+  style,
+  props,
+}: {
+  type: string;
+  style: any;
+  props: any;
+}) => {
+  switch (type) {
+    case "text":
+      return <TextField style={style} props={props} />;
+    case "input":
+      return <TextInput style={style} props={props} />;
+    default:
+      return <></>;
+  }
+};
+
+const RenderElement = ({
+  type,
+  style,
+  props,
+}: {
+  type: "text" | "input";
+  style: any;
+  props: any;
+}) => {
+  return <ElementList type={type} style={style} props={props} />;
+};
 
 const Canvas = () => {
   const [items, setItems] = useState<any[]>([]);
@@ -50,6 +82,7 @@ const Canvas = () => {
       </div>
       <div className=" flex-1 ">
         <ResponsiveGridLayout
+          rowHeight={40}
           onDrop={onDrop}
           // onLayoutChange={() => {}}
           breakpoints={{ lg: 1080 }}
@@ -64,9 +97,14 @@ const Canvas = () => {
                   setSelectedGrid(item);
                 }}
                 key={item?.id || ind}
-                className="bg-gray-300 cursor-pointer"
+                // className="bg-gray-300 cursor-pointer"
+                className=" cursor-pointer"
               >
-                {item?.type}
+                <RenderElement
+                  type={item?.type}
+                  style={item?.properties?.style || {}}
+                  props={item?.properties?.props || {}}
+                />
               </div>
             );
           })}

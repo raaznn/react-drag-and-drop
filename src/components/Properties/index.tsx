@@ -4,14 +4,14 @@ import useGrid from "../../hooks/useGrid";
 const propertiesList = [
   {
     label: "Background Color",
-    key: "background-color",
+    key: "backgroundColor",
     for: ["text", "input"],
     type: "style",
   },
   {
     label: "Text Color",
     key: "color",
-    for: ["text", "input"],
+    for: ["text"],
     type: "style",
   },
   {
@@ -29,7 +29,7 @@ const propertiesList = [
 ];
 
 const Properties = () => {
-  const { selectedGrid, setGridList, setSelectedGrid } = useGrid();
+  const { gridList, selectedGrid, setGridList, setSelectedGrid } = useGrid();
   return (
     <div className="bg-slate-200 flex-none w-80 px-5 pt-5">
       <span className="text-lg">Click element to change its properties</span>
@@ -44,18 +44,21 @@ const Properties = () => {
                     ...selectedGrid,
                     properties: {
                       ...selectedGrid?.properties,
-                      [e?.target?.name]: e?.target?.value,
+                      [item?.type]: {
+                        ...selectedGrid?.properties?.[item?.type],
+                        [e?.target?.name]: e?.target?.value,
+                      },
                     },
                   };
 
                   setSelectedGrid(newGrid);
 
-                  list?.map((gridItem) =>
+                  return list?.map((gridItem: any) =>
                     gridItem?.id !== selectedGrid?.id ? gridItem : newGrid
                   );
                 });
               }}
-              value={selectedGrid?.properties?.[item?.key]}
+              value={selectedGrid?.properties?.[item?.type]?.[item?.key] || ""}
               name={item?.key}
               className="mt-4 bg-white p-2 rounded-md"
               placeholder={item?.label}
@@ -68,7 +71,7 @@ const Properties = () => {
         <span>More properties can be added easily...</span>
       </div>
 
-      <pre className="mt-5">{JSON.stringify(selectedGrid, null, 2)}</pre>
+      {/* <pre className="mt-5">{JSON.stringify(gridList, null, 2)}</pre> */}
     </div>
   );
 };
