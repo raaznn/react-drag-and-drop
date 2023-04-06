@@ -7,12 +7,20 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const Canvas = () => {
   const [items, setItems] = useState<any[]>([]);
-  const { numOfColumns, setNumOfColumns } = useGrid();
+  const {
+    numOfColumns,
+    setNumOfColumns,
+    setSelectedGrid,
+    gridList,
+    setGridList,
+  } = useGrid();
 
   const onDrop = (layout: any, layoutItem: any, event: any) => {
     const { text } = JSON.parse(event?.dataTransfer?.getData("text/plain"));
-    setItems((prevItems) => [...prevItems, { id: uuid(), type: text }]);
-    console.log("dropped item ==> ", text);
+    setGridList((prevItems: any[]) => [
+      ...prevItems,
+      { id: uuid(), type: text },
+    ]);
   };
 
   return (
@@ -30,7 +38,13 @@ const Canvas = () => {
           <option value={12}>12</option>
           <option value={20}>20</option>
         </select>
-        <button onClick={() => setItems([])} className="ml-5 ">
+        <button
+          onClick={() => {
+            setGridList([]);
+            setSelectedGrid(null);
+          }}
+          className="ml-5 "
+        >
           Clear Canvas
         </button>
       </div>
@@ -38,14 +52,20 @@ const Canvas = () => {
         <ResponsiveGridLayout
           onDrop={onDrop}
           // onLayoutChange={() => {}}
-          breakpoints={{ lg: 1200 }}
+          breakpoints={{ lg: 1080 }}
           cols={{ lg: numOfColumns }}
           isDroppable
           style={{ minHeight: "100%" }}
         >
-          {items?.map((item, ind) => {
+          {gridList?.map((item: any, ind: number) => {
             return (
-              <div key={item?.id || ind} className="bg-gray-300 cursor-pointer">
+              <div
+                onClick={() => {
+                  setSelectedGrid(item);
+                }}
+                key={item?.id || ind}
+                className="bg-gray-300 cursor-pointer"
+              >
                 {item?.type}
               </div>
             );
